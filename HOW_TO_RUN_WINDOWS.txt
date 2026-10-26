@@ -1,0 +1,128 @@
+================================================================================
+           CAMPUS-EYE // AI SURVEILLANCE & ATTENDANCE SYSTEM
+                COMPLETE WINDOWS EXECUTION GUIDE
+================================================================================
+
+This project consists of two core components:
+  1. Python AI Backend (Flask + OpenCV + MediaPipe + SQLite)
+     - Runs the AI analysis engine (Face recognition, ID card, Haircut, Shoes)
+     - Streams MJPEG camera feeds and serves REST API on port 5050
+  2. Flutter Client (Windows Desktop Application)
+     - Multi-panel surveillance dashboard, analytics, student directory, cameras
+
+--------------------------------------------------------------------------------
+1. SYSTEM PREREQUISITES FOR WINDOWS
+--------------------------------------------------------------------------------
+Ensure the following tools are installed on your Windows machine:
+
+1. Python 3.10+ (Check with: python --version)
+2. Flutter SDK (e.g., C:\src\flutter\bin)
+3. Visual Studio 2022 / 2026 with "Desktop development with C++" workload installed
+   (Required by Flutter to compile native Windows .exe)
+4. Git for Windows (or MinGit)
+
+Verify your Flutter environment by running in PowerShell:
+   flutter doctor
+
+   (Ensure "[√] Flutter" and "[√] Visual Studio - develop Windows apps" have checkmarks)
+
+--------------------------------------------------------------------------------
+2. PYTHON BACKEND SETUP & RUNNING
+--------------------------------------------------------------------------------
+Step 2.1: Open a Terminal / PowerShell window and navigate to the project directory:
+   cd C:\Users\kishu\Desktop\KISH\FYP-main
+
+Step 2.2: Install Required Python Packages:
+   pip install flask flask-cors opencv-python mediapipe numpy
+
+Step 2.3: Start the Backend Server:
+   python server.py
+
+You will see:
+   >> Server listening on: http://127.0.0.1:5050
+   >> Database initialized: campus_eye.db
+   >> OpenCV & MediaPipe AI Detection Suite active
+
+* Keep this terminal window OPEN while running the application.
+
+--------------------------------------------------------------------------------
+3. RUNNING THE FLUTTER DESKTOP APP ON WINDOWS
+--------------------------------------------------------------------------------
+Step 3.1: Open a SECOND Terminal / PowerShell window and navigate to the project:
+   cd C:\Users\kishu\Desktop\KISH\FYP-main
+
+Step 3.2: Configure Flutter Environment (if Flutter is not in your global system PATH):
+   $env:Path = "C:\src\flutter\bin;C:\src\mingit\cmd;" + $env:Path
+
+Step 3.3: Fetch Flutter dependencies:
+   flutter pub get
+
+Step 3.4: Launch Native Windows Desktop App:
+   flutter run -d windows
+
+* The Windows desktop application window will open automatically.
+
+--------------------------------------------------------------------------------
+4. ALTERNATIVE: RUNNING AS A WEB APPLICATION (CHROME / EDGE)
+--------------------------------------------------------------------------------
+If you prefer running the dashboard inside a browser instead of native desktop:
+
+For Microsoft Edge:
+   flutter run -d edge
+
+For Google Chrome:
+   flutter run -d chrome
+
+--------------------------------------------------------------------------------
+5. CONVENIENT ONE-CLICK LAUNCH SCRIPT
+--------------------------------------------------------------------------------
+A pre-configured PowerShell script is included in the project folder:
+Simply right-click or run:
+   .\run_flutter.ps1 -d windows
+
+Or run the batch script:
+   run_flutter.bat windows
+
+--------------------------------------------------------------------------------
+6. TROUBLESHOOTING COMMON WINDOWS ISSUES
+--------------------------------------------------------------------------------
+
+Issue 1: "PathExistsException: Cannot create link ... errno = 183"
+-----------------------------------------------------------------
+Cause: Stale ephemeral Windows plugin symlinks from previous compilation.
+Fix: Run the following commands in PowerShell:
+   flutter clean
+   flutter pub get
+   flutter run -d windows
+
+Issue 2: "Flutter command not recognized"
+-----------------------------------------
+Fix: Add Flutter to your current PowerShell session:
+   $env:Path = "C:\src\flutter\bin;C:\src\mingit\cmd;" + $env:Path
+Or permanently add "C:\src\flutter\bin" to Windows Environment Variables (PATH).
+
+Issue 3: "Port 5050 already in use"
+------------------------------------
+Fix: Find and stop the previous Python process using port 5050:
+   Get-NetTCPConnection -LocalPort 5050 -ErrorAction SilentlyContinue
+   Stop-Process -Name "python" -Force
+Then restart:
+   python server.py
+
+Issue 4: Visual Studio C++ toolchain missing
+--------------------------------------------
+Fix: Open "Visual Studio Installer", click "Modify" on your Visual Studio installation,
+ensure the workload "Desktop development with C++" is checked, and complete installation.
+
+================================================================================
+                              SUMMARY OF COMMANDS
+================================================================================
+Terminal 1 (Backend):
+   cd C:\Users\kishu\Desktop\KISH\FYP-main
+   python server.py
+
+Terminal 2 (Frontend Desktop App):
+   cd C:\Users\kishu\Desktop\KISH\FYP-main
+   $env:Path = "C:\src\flutter\bin;C:\src\mingit\cmd;" + $env:Path
+   flutter run -d windows
+================================================================================
